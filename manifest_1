@@ -1,0 +1,44 @@
+kind: Namespace
+apiVersion: v1
+metadata:
+  name: default
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: myapp-deployment
+  namespace: default
+spec:
+  selector:
+    matchLabels:
+      app: node-app
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: node-app
+    spec:
+      containers:
+        - name: node-app
+          image: iad.ocir.io/orasenatdpltintegration03/demo-registry-repo:latest
+          imagePullPolicy: Always
+          ports:
+            - name: containerport
+              containerPort: 8080
+              protocol: TCP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: myapp-service
+  namespace: default
+  annotations:
+    oci.oraclecloud.com/load-balancer-type: "lb"
+spec:
+  type: LoadBalancer
+  ports:
+    - name: nodejs-port
+      port: 80
+      targetPort: 3000
+      protocol: TCP
+  selector:
+    app: node-app
