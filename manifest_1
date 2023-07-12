@@ -1,11 +1,11 @@
-kind: Namespace
+skind: Namespace
 apiVersion: v1
 metadata:
   name: default
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: myapp-deployment
+  name: nodejs-deployment
   namespace: default
 spec:
   selector:
